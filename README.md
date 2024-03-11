@@ -6,7 +6,7 @@ Appunti, metodologia di penetration test per il rilevamento di anomalie, elenco 
 
 - [Attacco 1. PetitPotam - NTLMv1 relay attack](#Attacco-1-PetitPotam-NTLMv1-relay-attack-)
 - [Attacco 2. Enumerazione AD da non autenticato sfruttando MITM6](#Attacco-2-Enumerazione-AD-da-non-autenticato-sfruttando-MITM6-)
-
+- [Attacco 3. Sfruttamento ESC 8 ADCS](#Attacco-3-Sfruttamento-ESC-8-ADCS-)
 ----------------
 ### Attacco 1. PetitPotam - NTLMv1 relay attack 🔐🕸🧑🏼‍💻
 
@@ -82,7 +82,7 @@ impacket-ntlmrelayx -6 -t ldaps://<DC-IP> -wh fakewpad.adlab.com -l loot
 ```
 
 -----------------
-#### STEP 3. GAINING ACCESS 🔓🧑🏼‍💻
+#### STEP 3. Sfruttamento ESC 8 ADCS 🔓🧑🏼‍💻
 
 ---------------
 #### STEP 4. POST-EXPLOITATION and LOCAL PRIVILEGE ESCALATION 🛠🧑🏼‍💻 
