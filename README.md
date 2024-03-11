@@ -82,12 +82,5 @@ impacket-ntlmrelayx -6 -t ldaps://<DC-IP> -wh fakewpad.adlab.com -l loot
 ```
 
 -----------------
-#### STEP 3. Sfruttamento ESC 8 ADCS 🔓🧑🏼‍💻
-
----------------
-#### STEP 4. POST-EXPLOITATION and LOCAL PRIVILEGE ESCALATION 🛠🧑🏼‍💻 
-
-
------------------
-#### STEP 5. NETWORK LATERAL MOVEMENT and PRIVILEGED ACCOUNTS HUNTING 🕸🧑🏼‍💻 
+#### Attacco 3. Sfruttamento ESC 8 ADCS 🔓🧑🏼‍💻
 
