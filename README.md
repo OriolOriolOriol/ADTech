@@ -4,8 +4,8 @@ Appunti, metodologia di penetration test per il rilevamento di anomalie, elenco 
 
 ## Tabelle contenuti
 
-- [Attacco 1. PetitPotam - NTLMv1 relay attack](#STEP-1-PetitPotam-NTLMv1-relay-attack-)
-- [Attacco 2. Enumerazione AD da non autenticato sfruttando MITM6](#STEP-2-Enumerazione-AD-da-non-autenticato-sfruttando-MITM6-)
+- [Attacco 1. PetitPotam - NTLMv1 relay attack](#Attacco-1-PetitPotam-NTLMv1-relay-attack-)
+- [Attacco 2. Enumerazione AD da non autenticato sfruttando MITM6](#Attacco-2-Enumerazione-AD-da-non-autenticato-sfruttando-MITM6-)
 
 ----------------
 ### Attacco 1. PetitPotam - NTLMv1 relay attack 🔐🕸🧑🏼‍💻
