@@ -88,7 +88,7 @@ impacket-ntlmrelayx -6 -t ldaps://<DC-IP> -wh fakewpad.adlab.com -l loot
 
 -----------------
 ### Attacco 3. Sfruttamento ESC 8 ADCS 🔓🧑🏼‍💻
-
+<img src="petit.png" width="800">
 -----------------
 ### Attacco 4. LDAP signing not required and LDAP channel binding disabled 🔓🧑🏼‍💻
 
