@@ -190,7 +190,7 @@ PS C:\temp> KrbRelayUp.exe spawn -m rbcd -d company.work -dc DC1.company.work -c
 
 #### Teoria
 
-Durante un test di penetrazione interno, se scopri una condivisione di file sulla rete con permessi di scrittura per il tuo account o per utenti non autenticati, puoi creare un file .SCF (Shell Command File) con un collegamento a un percorso UNC maligno (ad esempio il tuo Kali) e/o un file .URL con un collegamento a un URL maligno che ti permetterà di:
+Durante un test di penetrazione interno, se scopri una condivisione di file sulla rete con permessi di scrittura per il tuo account o per utenti non autenticati, puoi creare un file .SCF (Shell Command File) con un collegamento a un percorso UNC maligno (ad esempio la Kali) e/o un file .URL con un collegamento a un URL maligno che ti permetterà di:
 
 ➤ Catturare l'hash della password degli utenti che hanno navigato nella condivisione di file di rete;
    
