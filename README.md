@@ -15,7 +15,7 @@ Appunti, metodologia di penetration test per il rilevamento di anomalie, elenco 
 
 #### Prerequisiti
 
-➤ PetitPotam sul Domain Controller
+➤ PetitPotam sul Domain Controller (CVE-2021-36942)
 
 ➤ Uso di NTLMv1 come protocollo di autenticazione (lo vedi con un Responder ad esempio)
 
@@ -93,7 +93,7 @@ impacket-ntlmrelayx -6 -t ldaps://<DC-IP> -wh fakewpad.adlab.com -l loot
 
 #### Prerequisiti
 
-➤ Vulnerabilità PetitPotam sui domain controller.
+➤ Vulnerabilità PetitPotam sui domain controller (CVE-2021-36942).
 
 ➤ Per diventare DA cerca tramite BH template enabled i cuoi domain controller possono fare Enroll o Autoenroll.
 
