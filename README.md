@@ -165,6 +165,8 @@ Essenzialmente, **si tratta di un'elevazione universale dei privilegi locali non
 #### Prerequisiti
 ➤ LDAP not signing (Impostazione predefinita)
 
+➤ ms-DS-MachineAccountQuota ha bisogno di essere almeno a 1 (10 by default)
+
 #### Proof of Concept
 
 ➤ KrbRelayUP coercizzerà (obbligherà) un'autenticazione Kerberos dall'account della macchina locale, la trasmetterà a LDAP (AD) e creerà una primitiva di controllo sulla macchina locale usando un RBCD.
