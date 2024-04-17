@@ -9,6 +9,7 @@ Appunti, metodologia di penetration test per il rilevamento di anomalie, elenco 
 - [Attacco 3. Sfruttamento ESC 8 ADCS](#Attacco-3-Sfruttamento-ESC-8-ADCS-)
 - [Attacco 4. Aggiunta nuovo computer in AD con LDAP signing not required and LDAP channel binding disabled](#Attacco-4-Aggiunta-nuovo-computer-in-AD-con-LDAP-signing-not-required-and-LDAP-channel-binding-disabled-)
 - [Attacco 5. Local Privilege Escalation KrbRelayUp Kerberos Relay Attack with RBCD method](#Attacco-5-Local-Privilege-Escalation-KrbRelayUp-Kerberos-Relay-Attack-with-RBCD-method-)
+- [Attacco 6. SMB Relay attacks using SCF & URL files](#Attacco-6-SMB-Relay-attacks-using-SCF-&-URL-files-)
 ----------------
 ### Attacco 1. PetitPotam - NTLMv1 relay attack 🔐🕸🧑🏼‍💻
 
@@ -184,3 +185,21 @@ PS C:\temp> KrbRelayUp.exe spawn -m rbcd -d company.work -dc DC1.company.work -c
 
 ➤ Completato questi passaggi una shell nt authority/system comparirà
 
+-----------------
+### Attacco 6. SMB Relay attacks using SCF & URL files
+
+#### Teoria
+
+Durante un test di penetrazione interno, se scopri una condivisione di file sulla rete con permessi di scrittura per il tuo account o per utenti non autenticati, puoi creare un file .SCF (Shell Command File) con un collegamento a un percorso UNC maligno (ad esempio il tuo Kali) e/o un file .URL con un collegamento a un URL maligno che ti permetterà di:
+
+➤ Catturare l'hash della password degli utenti che hanno navigato nella condivisione di file di rete;
+   
+➤ Eseguire un attacco di SMB relay per tentare di eseguire comandi su un server remoto con i privilegi degli utenti che hanno navigato nella condivisione di file di rete.
+
+#### Prerequisiti
+
+➤ Trovare una share dove l'utenza che si possiede ha permessi di scrittura
+
+➤ SMB not signing
+
+#### Proof of Concept
