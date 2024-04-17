@@ -124,7 +124,7 @@ wmiexec.py -hashes :<HASH> domain/Administrator@<IP_DomainController>
 
 
 -----------------
-### Attacco 4. LDAP signing not required and LDAP channel binding disabled 🔓🧑🏼‍💻
+### Attacco 4. Aggiunta nuovo computer in AD con LDAP signing not required and LDAP channel binding disabled 🔓🧑🏼‍💻
 
 #### Prerequisiti
 
