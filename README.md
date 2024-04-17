@@ -7,7 +7,7 @@ Appunti, metodologia di penetration test per il rilevamento di anomalie, elenco 
 - [Attacco 1. PetitPotam - NTLMv1 relay attack](#Attacco-1-PetitPotam-NTLMv1-relay-attack-)
 - [Attacco 2. Enumerazione AD da non autenticato sfruttando MITM6](#Attacco-2-Enumerazione-AD-da-non-autenticato-sfruttando-MITM6-)
 - [Attacco 3. Sfruttamento ESC 8 ADCS](#Attacco-3-Sfruttamento-ESC-8-ADCS-)
-- [Attacco 4. LDAP signing not required and LDAP channel binding disabled](#Attacco-4-LDAP-signing-not-required-and-LDAP-channel-binding-disabled-)
+- [Attacco 4. Aggiunta nuovo computer in AD con LDAP signing not required and LDAP channel binding disabled](#Attacco-4-Aggiunta-nuovo-computer-in-AD-con-LDAP-signing-not-required-and-LDAP-channel-binding-disabled-)
 - [Attacco 5. KrbRelayUp Kerberos Relay Attack with RBCD method](#Attacco-5-KrbRelayUp-Kerberos-Relay-Attack-with-RBCD-method-)
 ----------------
 ### Attacco 1. PetitPotam - NTLMv1 relay attack 🔐🕸🧑🏼‍💻
