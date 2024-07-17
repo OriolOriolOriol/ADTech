@@ -95,7 +95,7 @@ impacket-ntlmrelayx -6 -t ldaps://<DC-IP> -wh fakewpad.adlab.com -l loot
 
 ➤ Vulnerabilità PetitPotam sui domain controller (CVE-2021-36942).
 
-➤ Per diventare DA cerca tramite BH template enabled i cuoi domain controller possono fare Enroll o Autoenroll.
+➤ Per diventare DA cerca tramite BH template enabled i cui domain controller possono fare Enroll o Autoenroll.
 
 ➤ Protocollo HTTP abilitato su AD CS.
 
