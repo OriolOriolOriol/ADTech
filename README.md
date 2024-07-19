@@ -129,29 +129,11 @@ wmiexec.py -hashes :<HASH> domain/Administrator@<IP_DomainController>
 
 ### Teoria
 
-Cos'è il Channel Binding?
+**Cos'è il Channel Binding?**
 
 Il channel binding è una tecnica di sicurezza che associa le credenziali di autenticazione a un canale di comunicazione specifico. Questo significa che le credenziali non possono essere utilizzate su un altro canale diverso da quello originale. È un modo per garantire che le credenziali siano utilizzate solo all'interno del contesto della connessione sicura originale.
 Esempio Pratico
 
-Immagina due persone, Alice e Bob, che vogliono comunicare in modo sicuro. Ecco come potrebbe funzionare il channel binding in un contesto LDAP:
-
-   ** Connessione Sicura (TLS):**
-        Alice si connette al server LDAP di Bob utilizzando TLS. Questo crea un canale sicuro e cifrato tra Alice e il server LDAP.
-        Durante la creazione di questa connessione TLS, viene generato un identificatore univoco per il canale, noto come "TLS Unique".
-
-    **Autenticazione:**
-        Dopo aver stabilito la connessione TLS, Alice invia le sue credenziali (ad esempio, username e password) per autenticarsi al server LDAP.
-        Alice include anche l'identificatore "TLS Unique" nel messaggio di autenticazione.
-
-   ** Verifica del Server:**
-        Il server LDAP di Bob riceve le credenziali di Alice insieme all'identificatore "TLS Unique".
-        Il server verifica che l'identificatore "TLS Unique" corrisponda al canale TLS attualmente in uso.
-
-    **Associazione delle Credenziali al Canale:**
-        Se l'identificatore "TLS Unique" è corretto, il server LDAP associa le credenziali di Alice a quel canale specifico.
-        Questo significa che le credenziali di Alice sono valide solo all'interno di quella connessione TLS specifica.
-        
 #### Prerequisiti
 
 ➤ LDAP not signing (di default).
