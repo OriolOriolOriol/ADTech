@@ -257,7 +257,7 @@ In entrambi i casi, il DC richiederà (ma non richiederà obbligatoriamente) il 
 
 ➤ Certificato valido ottenuto ad esempio con ESC1
 
-➤ ms-DS-MachineAccountQuota ha bisogno di essere almeno a 1 (10 by default)
+➤ Attivo almeno il meccanismo di autenticazione SCHANNEL
 
 #### Proof of Concept
 
