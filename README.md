@@ -9,8 +9,7 @@ Appunti, metodologia di penetration test per il rilevamento di anomalie, elenco 
 - [Attacco 3. Sfruttamento ESC 8 ADCS](#Attacco-3-Sfruttamento-ESC-8-ADCS-)
 - [Attacco 4. Aggiunta nuovo computer in AD con LDAP signing not required and LDAP channel binding disabled](#Attacco-4-Aggiunta-nuovo-computer-in-AD-con-LDAP-signing-not-required-and-LDAP-channel-binding-disabled-)
 - [Attacco 5. Local Privilege Escalation KrbRelayUp Kerberos Relay Attack with RBCD method](#Attacco-5-Local-Privilege-Escalation-KrbRelayUp-Kerberos-Relay-Attack-with-RBCD-method-)
-- [Attacco 6. SMB Relay attacks using SCF and URL files](#Attacco-6-SMB-Relay-attacks-using-SCF-and-URL-files-)
-- [Attacco 7. Authenticating with certificates when pkinit is not supported](#Attacco-7-Authenticating-with-certificates-when-pkinit-is-not-supported-)
+- [Attacco 6. Authenticating with certificates when pkinit is not supported](#Attacco-6-Authenticating-with-certificates-when-pkinit-is-not-supported-)
 ----------------
 ### Attacco 1. PetitPotam - NTLMv1 relay attack 🔐🕸🧑🏼‍💻
 
@@ -128,6 +127,31 @@ wmiexec.py -hashes :<HASH> domain/Administrator@<IP_DomainController>
 -----------------
 ### Attacco 4. Aggiunta nuovo computer in AD con LDAP signing not required and LDAP channel binding disabled 🔓🧑🏼‍💻
 
+### Teoria
+
+Cos'è il Channel Binding?
+
+Il channel binding è una tecnica di sicurezza che associa le credenziali di autenticazione a un canale di comunicazione specifico. Questo significa che le credenziali non possono essere utilizzate su un altro canale diverso da quello originale. È un modo per garantire che le credenziali siano utilizzate solo all'interno del contesto della connessione sicura originale.
+Esempio Pratico
+
+Immagina due persone, Alice e Bob, che vogliono comunicare in modo sicuro. Ecco come potrebbe funzionare il channel binding in un contesto LDAP:
+
+   ** Connessione Sicura (TLS):**
+        Alice si connette al server LDAP di Bob utilizzando TLS. Questo crea un canale sicuro e cifrato tra Alice e il server LDAP.
+        Durante la creazione di questa connessione TLS, viene generato un identificatore univoco per il canale, noto come "TLS Unique".
+
+    **Autenticazione:**
+        Dopo aver stabilito la connessione TLS, Alice invia le sue credenziali (ad esempio, username e password) per autenticarsi al server LDAP.
+        Alice include anche l'identificatore "TLS Unique" nel messaggio di autenticazione.
+
+   ** Verifica del Server:**
+        Il server LDAP di Bob riceve le credenziali di Alice insieme all'identificatore "TLS Unique".
+        Il server verifica che l'identificatore "TLS Unique" corrisponda al canale TLS attualmente in uso.
+
+    **Associazione delle Credenziali al Canale:**
+        Se l'identificatore "TLS Unique" è corretto, il server LDAP associa le credenziali di Alice a quel canale specifico.
+        Questo significa che le credenziali di Alice sono valide solo all'interno di quella connessione TLS specifica.
+        
 #### Prerequisiti
 
 ➤ LDAP not signing (di default).
@@ -187,26 +211,7 @@ PS C:\temp> KrbRelayUp.exe spawn -m rbcd -d company.work -dc DC1.company.work -c
 ➤ Completato questi passaggi una shell nt authority/system comparirà
 
 -----------------
-### Attacco 6. SMB Relay attacks using SCF and URL files 🕸🧑🏼‍💻
-
-#### Teoria
-
-Durante un test di penetrazione interno, se scopri una condivisione di file sulla rete con permessi di scrittura per il tuo account o per utenti non autenticati, puoi creare un file .SCF (Shell Command File) con un collegamento a un percorso UNC maligno (ad esempio la Kali) e/o un file .URL con un collegamento a un URL maligno che ti permetterà di:
-
-➤ Catturare l'hash della password degli utenti che hanno navigato nella condivisione di file di rete;
-   
-➤ Eseguire un attacco di SMB relay per tentare di eseguire comandi su un server remoto con i privilegi degli utenti che hanno navigato nella condivisione di file di rete.
-
-#### Prerequisiti
-
-➤ Trovare una share dove l'utenza che si possiede ha permessi di scrittura
-
-➤ SMB not signing
-
-#### Proof of Concept
-
------------------
-### Attacco 7. Authenticating with certificates when pkinit is not supported 🕸🧑🏼‍💻
+### Attacco 6. Authenticating with certificates when pkinit is not supported 🕸🧑🏼‍💻
 
 #### Teoria
 
