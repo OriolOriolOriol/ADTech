@@ -9,7 +9,7 @@ Appunti, metodologia di penetration test per il rilevamento di anomalie, elenco 
 - [Attacco 3. Sfruttamento ESC 8 ADCS](#Attacco-3-Sfruttamento-ESC-8-ADCS-)
 - [Attacco 4. Aggiunta nuovo computer in AD con LDAP signing not required and LDAP channel binding disabled](#Attacco-4-Aggiunta-nuovo-computer-in-AD-con-LDAP-signing-not-required-and-LDAP-channel-binding-disabled-)
 - [Attacco 5. Local Privilege Escalation KrbRelayUp Kerberos Relay Attack with RBCD method](#Attacco-5-Local-Privilege-Escalation-KrbRelayUp-Kerberos-Relay-Attack-with-RBCD-method-)
-- [Attacco 6. Authenticating with certificates when pkinit is not supported](#Attacco-6-Authenticating-with-certificates-when-pkinit-is-not-supported-)
+- [Attacco 6. Authenticating with certificates when PKINIT is not supported](#Attacco-6-Authenticating-with-certificates-when-PKINIT-is-not-supported-)
 ----------------
 ### Attacco 1. PetitPotam - NTLMv1 relay attack 🔐🕸🧑🏼‍💻
 
@@ -193,7 +193,7 @@ PS C:\temp> KrbRelayUp.exe spawn -m rbcd -d company.work -dc DC1.company.work -c
 ➤ Completato questi passaggi una shell nt authority/system comparirà
 
 -----------------
-### Attacco 6. Authenticating with certificates when pkinit is not supported 🕸🧑🏼‍💻
+### Attacco 6. Authenticating with certificates when PKINIT is not supported 🕸🧑🏼‍💻
 
 #### Teoria
 
