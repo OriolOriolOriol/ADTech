@@ -10,6 +10,7 @@ Appunti, metodologia di penetration test per il rilevamento di anomalie, elenco 
 - [Attacco 4. Aggiunta nuovo computer in AD con LDAP signing not required and LDAP channel binding disabled](#Attacco-4-Aggiunta-nuovo-computer-in-AD-con-LDAP-signing-not-required-and-LDAP-channel-binding-disabled-)
 - [Attacco 5. Local Privilege Escalation KrbRelayUp Kerberos Relay Attack with RBCD method](#Attacco-5-Local-Privilege-Escalation-KrbRelayUp-Kerberos-Relay-Attack-with-RBCD-method-)
 - [Attacco 6. Authenticating with certificates when PKINIT is not supported](#Attacco-6-Authenticating-with-certificates-when-PKINIT-is-not-supported-)
+- [Attacco 7. RDP Hijacking](#RDP-Hijacking)
 ----------------
 ### Attacco 1. PetitPotam - NTLMv1 relay attack 🔐🕸🧑🏼‍💻
 
@@ -279,3 +280,17 @@ Ottengo una shell tramite LDAP usando SCHANNEL come meccanismo di auth:
 python3 passthecert.py -action ldap-shell -crt user.crt -key user.key -domain domain.local -dc-ip "IPDC"
 ```
 
+
+### Attacco 7. RDP Hijacking 🕸🧑🏼‍💻
+
+#### Teoria
+
+Se si esegue **tscon.exe** come utente SYSTEM, è possibile connettersi a qualsiasi sessione senza password. Non viene richiesto nulla, ci si collega semplicemente al desktop dell'utente. I  Credo che questo sia dovuto al modo in cui l'ombra della sessione è stata implementata in  Microsoft Windows, e funziona da anni in questo modo.
+
+#### Prerequisiti
+
+➤  Verificare se gli utenti non si sono disconnessi ma hanno solo cliccato sul tasto x del RDP
+➤  Essere Local Admin sulla macchina
+
+#### Proof of Concept
+<img src="rdp.jpg" width="800">
